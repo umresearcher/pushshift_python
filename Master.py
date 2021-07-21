@@ -4,23 +4,9 @@ import json
 from datetime import datetime
 import time 
 import csv
+import logo
 
-print('         _____________        _____________         ')
-print('          ============        ============          ')
-print('           UUUUUMMMMN          UMMMMNNNNN           ')
-print('           UUUUUMMMMM\        /MMMMMNNNNN           ')
-print('           UUUUUMMMMMM\      /MMMMMMNNNNN           ')
-print('           UUUUUMMMMMMM\    /MMMMMMMNNNNN           ')
-print('           UUUUUMMMMMMMM\  /MMMMMMMMNNNNN           ')
-print('           UUUUUMMMMN^MMM\/MMM^UMMMMNNNNN           ')
-print('           UUUUUMMMMN \MMMMMM/ UMMMMNNNNN           ')
-print('           UUUUUMMMMN  \MMMM/  UMMMMNNNNN           ')
-print('           UUUUUMMMMN   \MM/   UMMMMNNNNN           ')
-print('           UUUUUMMMMN          UMMMMNNNNN           ')
-print('           UUUUUMMMMN          UMMMMNNNNN           ')
-print('           UUUUUMMMMN          UMMMMNNNNN           ')
-print('          _UUUUUMMMMN_UM FLINT_UMMMMNNNNN_          ')
-print('         ==============      ==============         ')
+logo.um()
 
 # initialize stall count
 global stallCount
@@ -28,7 +14,7 @@ stallCount = 0
 
 # make request and store as json
 def get_pushshift_subm_data(subafter, before, sub, N, stallCount):
-    url = 'https://api.pushshift.io/reddit/search/submission/?after='+str(subafter)+'&before='+str(before)+'&subreddit='+str(sub)+'&size='+str(N)
+    url = 'https://api.pushshift.io/reddit/search/submission/?after={}&before={}&subreddit={}&size={}'.format(str(subafter), str(before), str(sub), str(N))
     print(url)
     rs = requests.get(url)
     subm_status = rs.status_code
@@ -49,7 +35,7 @@ def get_pushshift_subm_data(subafter, before, sub, N, stallCount):
         return submissiondata['data']
         
 def get_pushshift_comm_data(comafter, before, sub, N, stallCount):
-    url = 'https://api.pushshift.io/reddit/search/comment/?after='+str(comafter)+'&before='+str(before)+'&subreddit='+str(sub)+'&size='+str(N)
+    url = 'https://api.pushshift.io/reddit/search/submission/?after={}&before={}&subreddit={}&size={}'.format(str(comafter), str(before), str(sub), str(N))
     print(url)
     rc = requests.get(url)
     comm_status = rc.status_code
@@ -176,7 +162,7 @@ def update_File():
             a.writerow(Stats[stat][0])
             upload_count += 1
         
-        print(str(subCount) + " submissions, and " + str(comCount) + " comments have been uploaded into " + name + '\n')
+        print('{} submissions, and {} comments have been uploaded into {} \n'.format(str(subCount), str(comCount), name))
 
 # Create Global Dictionary to hold 'subData' & 'comData'
 Stats = {}
@@ -222,7 +208,7 @@ while ((sublen > 0) or (comlen > 0)):
     for comment in commentdata:
         collect_Data(comment)
         comCount += 1
-    if sublen > 0: # Calls get_pushshift_comm_data() with the created data of the last comment
+    if sublen > 0: # Calls get_pushshift_sub_data() with the created data of the last submission
         print(str(datetime.fromtimestamp(submissiondata[-1]['created_utc'])))
         subafter = submissiondata[-1]['created_utc']
         submissiondata = get_pushshift_subm_data(subafter, before, sub, N, stallCount)
@@ -240,4 +226,5 @@ while ((sublen > 0) or (comlen > 0)):
 
 print('<<< your program has finished and your data is available in the run directory, stored in /' + name + ' >>>')
 
-exit()
+if __name__ == '__main__':
+    exit()
