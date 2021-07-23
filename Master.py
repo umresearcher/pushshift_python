@@ -1,10 +1,15 @@
+'''                                
+Created By Cason Konzer June 2021
+Version 1.0
+'''
 import pandas as pd
 import requests
 import json
-from datetime import datetime
 import time 
 import csv
 import logo
+import datetime
+start = datetime.datetime.now()
 
 logo.um()
 
@@ -25,9 +30,9 @@ def get_pushshift_subm_data(subafter, before, sub, N, stallCount):
     else: # if status bad; wait and retry
         stallCount += 1
         print()
-        print('<<< YOU JUST GOT STALLED! STALL COUNT IS:', stallCount)
+        print('<<< YOU JUST GOT STALLED! STALL COUNT IS:', stallCount, '>>>')
         print()
-        time.sleep(15*stallCount)
+        time.sleep(30*stallCount)
         rs = requests.get(url)
         subm_status = rs.status_code
         print('new http response is:',subm_status)
@@ -35,7 +40,7 @@ def get_pushshift_subm_data(subafter, before, sub, N, stallCount):
         return submissiondata['data']
         
 def get_pushshift_comm_data(comafter, before, sub, N, stallCount):
-    url = 'https://api.pushshift.io/reddit/search/submission/?after={}&before={}&subreddit={}&size={}'.format(str(comafter), str(before), str(sub), str(N))
+    url = 'https://api.pushshift.io/reddit/search/comment/?after={}&before={}&subreddit={}&size={}'.format(str(comafter), str(before), str(sub), str(N))
     print(url)
     rc = requests.get(url)
     comm_status = rc.status_code
@@ -46,14 +51,14 @@ def get_pushshift_comm_data(comafter, before, sub, N, stallCount):
     else: # if status bad; wait and retry
         stallCount += 1
         print()
-        print('<<< YOU JUST GOT STALLED! STALL COUNT IS:', stallCount)
+        print('<<< YOU JUST GOT STALLED! STALL COUNT IS:', stallCount, '>>>')
         print()
-        time.sleep(15*stallCount)
-        rs = requests.get(url)
-        subm_status = rs.status_code
-        print('new http response is:',subm_status)
-        commentdata = json.loads(rs.text, strict=False)
-        return submissiondata['data']
+        time.sleep(30*stallCount)
+        rc = requests.get(url)
+        comm_status = rc.status_code
+        print('new http response is:',comm_status)
+        commentdata = json.loads(rc.text, strict=False)
+        return commentdata['data']
 
 
 # take relevant data from json and write to dictionary 
@@ -73,7 +78,7 @@ def collect_Data(data):
         url = 'NA'
     try:
         timestamp = data['created_utc'] 
-        date_time = datetime.fromtimestamp(timestamp)
+        date_time = datetime.datetime.fromtimestamp(timestamp)
         date = date_time.strftime("%m/%d/%Y")
     except KeyError:
         date = '0'    
@@ -209,13 +214,13 @@ while ((sublen > 0) or (comlen > 0)):
         collect_Data(comment)
         comCount += 1
     if sublen > 0: # Calls get_pushshift_sub_data() with the created data of the last submission
-        print(str(datetime.fromtimestamp(submissiondata[-1]['created_utc'])))
+        print(str(datetime.datetime.fromtimestamp(submissiondata[-1]['created_utc'])))
         subafter = submissiondata[-1]['created_utc']
         submissiondata = get_pushshift_subm_data(subafter, before, sub, N, stallCount)
         sublen = len(submissiondata)
         time.sleep(1 + stallCount)
     if comlen > 0:# Calls get_pushshift_comm_data() with the created data of the last comment
-        print(str(datetime.fromtimestamp(commentdata[-1]['created_utc'])))
+        print(str(datetime.datetime.fromtimestamp(commentdata[-1]['created_utc'])))
         comafter = commentdata[-1]['created_utc']
         commentdata = get_pushshift_comm_data(comafter, before, sub, N, stallCount)
         comlen = len(commentdata)
@@ -225,6 +230,10 @@ while ((sublen > 0) or (comlen > 0)):
     time.sleep(1 + stallCount)
 
 print('<<< your program has finished and your data is available in the run directory, stored in /' + name + ' >>>')
+
+end = datetime.datetime.now()
+print('\nStarted: ', start)
+print('Finished: ', end)
 
 if __name__ == '__main__':
     exit()
