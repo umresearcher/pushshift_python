@@ -1,69 +1,91 @@
 '''                                
 Created By Cason Konzer June 2021
-Version 1.0
+Version 0.6
 '''
-import pandas as pd
-import requests
-import json
-import time 
-import csv
-import logo
-import datetime
-start = datetime.datetime.now()
+import requests, json, time, csv, logo, datetime #,pandas as pd # import modules
+start = datetime.datetime.now() # get program start time
+logo.um() # print UM art
+stallCount = 0 # initialize stall count
 
-logo.um()
-
-# initialize stall count
-global stallCount
-stallCount = 0
-
-# make request and store as json
+# make submission request and store as json
 def get_pushshift_subm_data(subafter, before, sub, N, stallCount):
     url = 'https://api.pushshift.io/reddit/search/submission/?after={}&before={}&subreddit={}&size={}'.format(str(subafter), str(before), str(sub), str(N))
-    print(url)
-    rs = requests.get(url)
-    subm_status = rs.status_code
-    print('http response is:',subm_status)
-    if subm_status == 200:
-        submissiondata = json.loads(rs.text, strict=False)
-        return submissiondata['data']
-    else: # if status bad; wait and retry
-        stallCount += 1
-        print()
-        print('<<< YOU JUST GOT STALLED! STALL COUNT IS:', stallCount, '>>>')
-        print()
-        time.sleep(30*stallCount)
-        rs = requests.get(url)
-        subm_status = rs.status_code
-        print('new http response is:',subm_status)
-        submissiondata = json.loads(rs.text, strict=False)
-        return submissiondata['data']
-        
-def get_pushshift_comm_data(comafter, before, sub, N, stallCount):
+    time.sleep(1); print(url)
+    try:
+        time.sleep(1); rs = requests.get(url); subm_status = rs.status_code; print('http response is:', subm_status)
+    except:
+        subm_status = ' NO HANDSHAKE '; print('http response is:', subm_status)
+    retry = 0
+    if subm_status != 200:
+        while retry <= 100: # retry 5 times; increase wait time with each bad response
+            stallCount += 1; retry += 1
+            print('\n<<< YOU JUST GOT STALLED! >>>\n')
+            print('<<< This is retry #:', retry, '>>>\n')
+            print('[                                      ]'); time.sleep(3 * stallCount); print('[#                                     ]'); time.sleep(3 * stallCount); print('[##                                    ]'); time.sleep(3 * stallCount)
+            print('[###                                   ]'); time.sleep(2.5*stallCount); print('[####                                  ]'); time.sleep(2.5*stallCount); print('[#####                                 ]'); time.sleep(2.5*stallCount)
+            print('[######                                ]'); time.sleep(2 * stallCount); print('[#######                               ]'); time.sleep(2 * stallCount); print('[########                              ]'); time.sleep(2 * stallCount)
+            print('[#########                             ]'); time.sleep(2 * stallCount); print('[##########                            ]'); time.sleep(2 * stallCount); print('[###########                           ]'); time.sleep(2 * stallCount)
+            print('[############                          ]'); time.sleep(2 * retry);      print('[#############                         ]'); time.sleep(2 * retry);      print('[##############                        ]'); time.sleep(2 * retry)
+            print('[###############                       ]'); time.sleep(1.5*retry);      print('[################                      ]'); time.sleep(1.5*retry);      print('[#################                     ]'); time.sleep(1.5*retry)
+            print('[##################                    ]'); time.sleep(1 * retry);      print('[###################                   ]'); time.sleep(1 * retry);      print('[####################                  ]'); time.sleep(1 * retry)
+            print('[#####################                 ]'); time.sleep(1 * retry);      print('[######################                ]'); time.sleep(1 * retry);      print('[#######################               ]'); time.sleep(1 * retry)
+            print('[########################              ]'); time.sleep(.5* retry);      print('[#########################             ]'); time.sleep(.5* retry);      print('[##########################            ]'); time.sleep(.5* retry)
+            print('[###########################           ]'); time.sleep(0 * retry);      print('[############################          ]'); time.sleep(0 * retry);      print('[#############################         ]'); time.sleep(0 * retry)
+            print('[##############################        ]'); time.sleep(0 * retry);      print('[###############################       ]'); time.sleep(0 * retry);      print('[################################      ]'); time.sleep(0 * retry)
+            print('[#################################     ]'); time.sleep(0 * retry);      print('[##################################    ]'); time.sleep(0 * retry);      print('[###################################   ]'); time.sleep(0 * retry)
+            print('[####################################  ]'); time.sleep(0 * retry);      print('[##################################### ]'); time.sleep(0 * retry);      print('[######################################]\n'); time.sleep(0 * retry)
+            try:
+                rs = requests.get(url); subm_status = rs.status_code; print('retry http response is:', subm_status)
+            except:
+                subm_status = ' NO HANDSHAKE '; print('retry http response is:', subm_status)
+            
+            if subm_status == 200:
+                break
+    time.sleep(1); submissiondata = json.loads(rs.text, strict=False)
+    return submissiondata['data']
+
+def get_pushshift_comm_data(comafter, before, sub, N, stallCount): # make comment request and store as json
     url = 'https://api.pushshift.io/reddit/search/comment/?after={}&before={}&subreddit={}&size={}'.format(str(comafter), str(before), str(sub), str(N))
-    print(url)
-    rc = requests.get(url)
-    comm_status = rc.status_code
-    print('http response is:',comm_status)
-    if comm_status == 200:
-        commentdata = json.loads(rc.text, strict=False)
-        return commentdata['data']
-    else: # if status bad; wait and retry
-        stallCount += 1
-        print()
-        print('<<< YOU JUST GOT STALLED! STALL COUNT IS:', stallCount, '>>>')
-        print()
-        time.sleep(30*stallCount)
-        rc = requests.get(url)
-        comm_status = rc.status_code
-        print('new http response is:',comm_status)
-        commentdata = json.loads(rc.text, strict=False)
-        return commentdata['data']
+    time.sleep(1); print(url)
+    try:
+        time.sleep(1); rc = requests.get(url); comm_status = rc.status_code; print('http response is:', comm_status)
+    except:
+        comm_status = ' NO HANDSHAKE '; print('http response is:', comm_status)
+    retry = 0
+    if comm_status != 200:
+        while retry <= 100: # retry 5 times; increase wait time with each bad response
+            stallCount += 1; retry += 1
+            print('\n<<< YOU JUST GOT STALLED! >>>\n')
+            print('<<< This is retry #:', retry, '>>>\n')
+            print('[                                      ]'); time.sleep(3 * stallCount); print('[#                                     ]'); time.sleep(3 * stallCount); print('[##                                    ]'); time.sleep(3 * stallCount)
+            print('[###                                   ]'); time.sleep(2.5*stallCount); print('[####                                  ]'); time.sleep(2.5*stallCount); print('[#####                                 ]'); time.sleep(2.5*stallCount)
+            print('[######                                ]'); time.sleep(2 * stallCount); print('[#######                               ]'); time.sleep(2 * stallCount); print('[########                              ]'); time.sleep(2 * stallCount)
+            print('[#########                             ]'); time.sleep(2 * stallCount); print('[##########                            ]'); time.sleep(2 * stallCount); print('[###########                           ]'); time.sleep(2 * stallCount)
+            print('[############                          ]'); time.sleep(2 * retry);      print('[#############                         ]'); time.sleep(2 * retry);      print('[##############                        ]'); time.sleep(2 * retry)
+            print('[###############                       ]'); time.sleep(1.5*retry);      print('[################                      ]'); time.sleep(1.5*retry);      print('[#################                     ]'); time.sleep(1.5*retry)
+            print('[##################                    ]'); time.sleep(1 * retry);      print('[###################                   ]'); time.sleep(1 * retry);      print('[####################                  ]'); time.sleep(1 * retry)
+            print('[#####################                 ]'); time.sleep(1 * retry);      print('[######################                ]'); time.sleep(1 * retry);      print('[#######################               ]'); time.sleep(1 * retry)
+            print('[########################              ]'); time.sleep(.5* retry);      print('[#########################             ]'); time.sleep(.5* retry);      print('[##########################            ]'); time.sleep(.5* retry)
+            print('[###########################           ]'); time.sleep(0 * retry);      print('[############################          ]'); time.sleep(0 * retry);      print('[#############################         ]'); time.sleep(0 * retry)
+            print('[##############################        ]'); time.sleep(0 * retry);      print('[###############################       ]'); time.sleep(0 * retry);      print('[################################      ]'); time.sleep(0 * retry)
+            print('[#################################     ]'); time.sleep(0 * retry);      print('[##################################    ]'); time.sleep(0 * retry);      print('[###################################   ]'); time.sleep(0 * retry)
+            print('[####################################  ]'); time.sleep(0 * retry);      print('[##################################### ]'); time.sleep(0 * retry);      print('[######################################]\n'); time.sleep(0 * retry)
+            try:
+                rc = requests.get(url); comm_status = rc.status_code; print('retry http response is:', comm_status)
+            except:
+                comm_status = ' NO HANDSHAKE '; print('retry http response is:', comm_status)
+            if comm_status == 200:
+                break
+    time.sleep(1); commentdata = json.loads(rc.text, strict=False)
+    return commentdata['data']
 
-
-# take relevant data from json and write to dictionary 
-def collect_Data(data):
+def collect_Data(data, postT): # take relevant data from json and write to dictionary 
     Data = list() # list to store data points
+    PostType = postT
+    try:
+        sub = data['subreddit'] # 
+    except KeyError:
+        sub = 'NA'
     try:
         Id = data['id'] # Returns the id of the comment or submission
     except KeyError:
@@ -73,15 +95,29 @@ def collect_Data(data):
     except KeyError:
         parId = 'NA'
     try:
+        linkId = data['link_id'] # 
+    except KeyError:
+        linkId = 'NA'
+    try:
         url = data['url'] # Returns the url of the post
     except KeyError:
         url = 'NA'
     try:
-        timestamp = data['created_utc'] 
-        date_time = datetime.datetime.fromtimestamp(timestamp)
-        date = date_time.strftime("%m/%d/%Y")
+        perma = data['permalink'] #
     except KeyError:
-        date = '0'    
+        perma = 'NA'
+    try:
+        timestamp = data['created_utc']; date_time = datetime.datetime.fromtimestamp(timestamp); date = date_time.strftime("%m/%d/%Y")
+    except KeyError:
+        date = 'NA'
+    try:
+        created_utc = data['created_utc'] # Returns the time of the post in utc
+    except KeyError:
+        created_utc = 'NA'    
+    try:
+        retrival = data['retrieved_on'] # 
+    except KeyError:
+        retrival = 'NA' 
     try:
         score = data['score'] # Returns the sum score of the post
     except KeyError:
@@ -91,24 +127,20 @@ def collect_Data(data):
     except KeyError:
         numComments = 'NA'
     try:
-        title = data['title'] # Returns the title of the post
+        title = data['title']; title = r'{}'.format(title) # Returns the title of the post
     except KeyError:
         title = 'NA'
     try:
-        body = data['body'] # Returns the body of the post
+        body = data['body']; body = r'{}'.format(body) # Returns the body of the post
     except KeyError:
         body = 'NA'
     try:
-        author = data['author'] # Returns the author of the post
+        author = data['author']; author = r'{}'.format(author) # Returns the author of the post
     except KeyError:
         author = 'NA'
-    Data.append((Id,parId,url,date,score,numComments,author,title,body))
+    Data.append((PostType, sub, Id, linkId, parId, url, perma, created_utc, retrival, date, score, numComments, author, title, body)) 
     Stats[Id] = Data
-
-    # try:
-    #     created_utc = data['created_utc'] # Returns the time of the post in utc
-    # except KeyError:
-    #     created_utc = 'NA'
+# Other possible pushshift pulls I have not implemented
     # try:
     #     http_link = data['full_link']
     # except KeyError:
@@ -123,11 +155,6 @@ def collect_Data(data):
     #     date_time = datetime.datetime.fromtimestamp(data['created_utc'])
     # except KeyError:
     #     date_time = "NA"
-    #  ------------------------------------
-    # try:
-    #     subreddit = data['subreddit']
-    # except KeyError:
-    #     subreddit = "NA"
     #  ------------------------------------
     # try:
     #     author_fullname = data['author_fullname']
@@ -148,92 +175,71 @@ def collect_Data(data):
     #     hint = data['post_hint']
     # except KeyError:
     #     hint = "NA"
-    # ------------------------------------
+    #  ------------------------------------
     # try:
     #     flair_text = data['link_flair_text']
     # except KeyError:
     #     flair_text = "NA"
 
-
-# take data from dictionary and write to csv
-def update_File():
+def update_File(): # take data from dictionary and write to csv
     upload_count = 0
     with open(name, 'w', newline = '', encoding = 'utf-8') as file:
         a = csv.writer(file, delimiter = ',')
-    #              <Id>   :   <parId>   :   <url>   :   <date>   :   <score>   :   <numComments>   :   <author>   :   <title>   :   <body>
-        headers = ["ID",    "Parent Id",    "Url",   "Post Date",    "Score",      "# Comments",       "Author",      "Title",      "Body"]
+        #         <PostType> : <sub> : <Id> : <linkId> : <parId> : <url> : <perma> : <created_utc> : <retrival> : <date> : <score> : <numComments> : <author> : <title> : <body>
+        headers = ["Post Type", "Subreddit", "ID", "Link Id", "Parent Id", "Url", "Permalink", "UTC", "Retrived On", "Post Date", "Score", "# Comments", "Author", "Title", "Body"]
         a.writerow(headers)
         for stat in Stats:
-            a.writerow(Stats[stat][0])
-            upload_count += 1
-        
+            a.writerow(Stats[stat][0]); upload_count += 1
         print('{} submissions, and {} comments have been uploaded into {} \n'.format(str(subCount), str(comCount), name))
+    time.sleep(1)
+print(('#####################' * 5) + '\n')
 
-# Create Global Dictionary to hold 'subData' & 'comData'
-Stats = {}
-# track # of submissions & comments
-subCount = 0
-comCount = 0
-# Subreddit to query 
-print('<<< What subreddit would you like to query? >>>')
-sub = str(input())
-print('<<< You have choosen to que', sub, '>>>', '\n')
-# get queries after beginning of time
-print('<<< What is the earliest post you would like to see? *Enter in utc timestamp* >>>')
-print('<<< Enter 0 for earliest availiable comment >>>')
-after = str(input())
+Stats = {} # Create Global Dictionary to hold 'subData' & 'comData'
+subCount = 0; comCount = 0 # track # of submissions & comments
+print('<<< What subreddit would you like to query? >>>\n<<< Enter name of subreddit [ex. Research] >>>  ::', end = '')
+sub = str(input()) # Subreddit to query 
+print('\n<<< You have choosen to que subreddit: "', sub, '" >>>\n\n', '---------------------' * 5, '\n')
+print('<<< What is the earliest post you would like to see? *Enter in utc timestamp* >>>\n')
+print('<<< Enter 0 for earliest availiable post >>>  ::', end = '')
+after = str(input()) # get queries after beginning of time
 if after == '0':
     after = '0000000000'
-subafter = after
-comafter = after
-print('<<< You have choosen to que comments after', after, '>>>', '\n')
-# get queries before 6/30/21
-print('<<< What is the latest post you would like to see? *Enter in utc timestamp* >>>')
-print('<<< Enter 0 for latest availiable comment >>>')
-before = str(input())
+subafter = after; comafter = after
+print('\n<<< You have choosen to que posts after utc: "', after, '" >>>\n\n', '---------------------' * 5, '\n')
+print('<<< What is the latest post you would like to see? *Enter in utc timestamp* >>>\n')
+print('<<< Enter 0 for latest availiable post >>>  ::', end = '')
+before = str(input()) # get queries before end of time
 if before == '0':
     before = '9999999999'
-print('<<< You have choosen to que comments before', before, '>>>', '\n')
-# N queries to at a time
-N = 100
-# create file name
-name = sub + 'data.csv'
-# initialize submission & commentrequest 
-submissiondata = get_pushshift_subm_data(subafter, before, sub, N, stallCount)
-commentdata = get_pushshift_comm_data(comafter, before, sub, N, stallCount)
-# initialize lengths 
-sublen = len(submissiondata)
-comlen = len(commentdata)
-print('<<< Variables Initialized >>>', '\n')
+print('\n<<< You have choosen to que posts before utc: "', before, '" >>>\n\n', '---------------------' * 5, '\n')
+N = 123456789 # N queries to at a time
+name = sub + '.data.csv' # create file name
+submissiondata = get_pushshift_subm_data(subafter, before, sub, N, stallCount); commentdata = get_pushshift_comm_data(comafter, before, sub, N, stallCount) # initialize submission & commentrequest 
+sublen = len(submissiondata); comlen = len(commentdata) # initialize lengths 
 
-while ((sublen > 0) or (comlen > 0)):
+print('\n<<< Variables Initialized >>>\n\n' + ('#####################' * 5) + '\n\n')
+while sublen > 0:
     for submission in submissiondata:
-        collect_Data(submission)
-        subCount += 1
-    for comment in commentdata:
-        collect_Data(comment)
-        comCount += 1
+        collect_Data(submission, 'submission'); subCount = subCount + 1
     if sublen > 0: # Calls get_pushshift_sub_data() with the created data of the last submission
         print(str(datetime.datetime.fromtimestamp(submissiondata[-1]['created_utc'])))
         subafter = submissiondata[-1]['created_utc']
         submissiondata = get_pushshift_subm_data(subafter, before, sub, N, stallCount)
-        sublen = len(submissiondata)
-        time.sleep(1 + stallCount)
-    if comlen > 0:# Calls get_pushshift_comm_data() with the created data of the last comment
+        sublen = len(submissiondata); time.sleep(5 * (stallCount + 1))
+    update_File() ; print(('*********************' * 5) + '\n')
+print(('XXXXXXXXXXXXXXXXXXXXX' * 5) + '\n\n<<< submission pull completed; now gathering comments >>>\n\n' + ('XXXXXXXXXXXXXXXXXXXXX' * 5) + '\n'); time.sleep(5)
+while comlen > 0:
+    for comment in commentdata:
+        collect_Data(comment, 'comment'); comCount = comCount + 1
+    if comlen > 0: # Calls get_pushshift_comm_data() with the created data of the last comment
         print(str(datetime.datetime.fromtimestamp(commentdata[-1]['created_utc'])))
         comafter = commentdata[-1]['created_utc']
         commentdata = get_pushshift_comm_data(comafter, before, sub, N, stallCount)
-        comlen = len(commentdata)
-        time.sleep(1 + stallCount)
-    update_File() # call to write submission & comment data to csv file
-    # make program wait to keep from getting booted
-    time.sleep(1 + stallCount)
+        comlen = len(commentdata); time.sleep(5 * (stallCount + 1))
+    update_File(); print(('*********************' * 5) + '\n')
 
+print(('XXXXXXXXXXXXXXXXXXXXX' * 5) + '\n\n<<< comment pull completed >>>\n' + ('XXXXXXXXXXXXXXXXXXXXX' * 5) + '\n')
 print('<<< your program has finished and your data is available in the run directory, stored in /' + name + ' >>>')
-
-end = datetime.datetime.now()
-print('\nStarted: ', start)
-print('Finished: ', end)
-
-if __name__ == '__main__':
+end = datetime.datetime.now(); print('\n\n\nStarted: ' + str(start) + '\n\nFinished: ' + str(end) + '\n\n') # print out star/end time
+if __name__ == '__main__': 
     exit()
