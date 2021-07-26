@@ -1,4 +1,7 @@
 # pushshift_python
-using pushshift api via python; writing requests to csv
+Using pushshift api via python; writing requests to csv
 
-For now you must figure out on own. If urgent contact me
+This Repo is work in progress. If bugs are found feel free to contact me: casonk@umich.edu
+
+Analytics features coming.
+Authorship overlap by community; cross community references; plotting metrics. 
