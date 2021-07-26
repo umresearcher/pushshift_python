@@ -1,0 +1,66 @@
+'''                                
+Created By Cason Konzer July 26, 2021
+Version 0.0
+'''
+import time, datetime
+
+def now():
+    return datetime.datetime.now()
+
+def loader(t):
+    print('\n[                                        ]'); time.sleep(4*t); print('[#                                       ]'); time.sleep(3.9*t)
+    print('[##                                      ]'); time.sleep(3.8*t); print('[###                                     ]'); time.sleep(3.7*t)
+    print('[####                                    ]'); time.sleep(3.6*t); print('[#####                                   ]'); time.sleep(3.5*t)
+    print('[######                                  ]'); time.sleep(3.4*t); print('[#######                                 ]'); time.sleep(3.3*t)
+    print('[########                                ]'); time.sleep(3.2*t); print('[#########                               ]'); time.sleep(3.1*t)
+    print('[##########                              ]'); time.sleep(3*t);   print('[###########                             ]'); time.sleep(2.9*t)
+    print('[############                            ]'); time.sleep(2.8*t); print('[#############                           ]'); time.sleep(2.7*t)
+    print('[##############                          ]'); time.sleep(2.6*t); print('[###############                         ]'); time.sleep(2.5*t)
+    print('[################                        ]'); time.sleep(2.4*t); print('[#################                       ]'); time.sleep(2.3*t)
+    print('[##################                      ]'); time.sleep(2.2*t); print('[###################                     ]'); time.sleep(2.1*t)
+    print('[####################                    ]'); time.sleep(2*t);   print('[#####################                   ]'); time.sleep(1.9*t)
+    print('[######################                  ]'); time.sleep(1.8*t); print('[#######################                 ]'); time.sleep(1.7*t)
+    print('[########################                ]'); time.sleep(1.6*t); print('[#########################               ]'); time.sleep(1.5*t)
+    print('[##########################              ]'); time.sleep(1.4*t); print('[###########################             ]'); time.sleep(1.3*t)
+    print('[############################            ]'); time.sleep(1.2*t); print('[#############################           ]'); time.sleep(1.1*t)
+    print('[##############################          ]'); time.sleep(t);     print('[###############################         ]'); time.sleep(.9*t)
+    print('[################################        ]'); time.sleep(.8*t);  print('[#################################       ]'); time.sleep(.7*t)
+    print('[##################################      ]'); time.sleep(.6*t);  print('[###################################     ]'); time.sleep(.5*t)
+    print('[####################################    ]'); time.sleep(.4*t);  print('[#####################################   ]'); time.sleep(.3*t)
+    print('[######################################  ]'); time.sleep(.4*t);  print('[####################################### ]'); time.sleep(.3*t)
+    print('[########################################]\n'); 
+
+def um():
+    print('                                                                                                    ')
+    print('                                                                                                    ')
+    print('                                                                                                    ')
+    print('                                                                                                    ')
+    print('                                                                                                    ')
+    print('                                                                                                    ')
+    print('                                                                                                    ')
+    print('                         __________________            __________________                           ')
+    print('                        |UUUUUUUUMMMMNNNNNN\          /UUUUUMMMMMNNNNNNNN|                          ')
+    print('                        |UUUUUUUUMMMMNNNNNNN\        /UUUUUUUMMMMNNNNNNNN|                          ')
+    print('                        |UUUUUUUUMMMMNNNNNNNN\      /UUUUUUUUMMMMNNNNNNNN|                          ')
+    print('                          |UUUUUUMMMMNNNNNNNNN\    /UUUUUUUUUMMMMNNNNNN|                            ')
+    print('                          |UUUUUUMMMMNNNNNNNNNN\__/UUUUUUUUUUMMMMNNNNNN|                            ')
+    print('                          |UUUUUUMMMMNNNNMMUUUUUUMMMMMMMMUUUUMMMMNNNNNN|                            ')
+    print('                          |UUUUUUMMMMNNNNMMUUUUUUMMMMMMMMUUUUMMMMNNNNNN|                            ')
+    print('                          |UUUUUUMMMMNN| \MUUUUUUMMMNNNN/ |UUMMMMNNNNNN|                            ')
+    print('                          |UUUUUUMMMMNN|  \MMUUUUMMNNNN/  |UUMMMMNNNNNN|                            ')
+    print('                          |UUUUUUMMMMNN|   \MMUUUMMNNN/   |UUMMMMNNNNNN|                            ')
+    print('                          |UUUUUUMMMMNN|    \MMUUMMNN/    |UUMMMMNNNNNN|                            ')
+    print('                          |UUUUUUMMMMNN|     \MMUMNN/     |UUMMMMNNNNNN|                            ')
+    print('                          |UUUUUUMMMMNN|      \MMNN/      |UUMMMMNNNNNN|                            ')
+    print('                         _|UUUUUUMMMMNN|_      \MN/      _|UUMMMMNNNNNN|_                           ')
+    print('                        |UUUUUUUUMMMMNNNN|              |UUUUMMMMNNNNNNNN|                          ')
+    print('                        |UUUUUUUUMMMMNNNN|   UM FLINT   |UUUUMMMMNNNNNNNN|                          ')
+    print('                        |UUUUUUUUMMMMNNNN|   COMP SCI   |UUUUMMMMNNNNNNNN|                          ')
+    print('                        |UUUUUUUUMMMMNNNN|   RESEARCH   |UUUUMMMMNNNNNNNN|                          ')
+    print('                                                                                                    ')
+    print('                                                                                                    ')
+    print('                                                                                                    ')
+    print('                                                                                                    ')
+    print('                                                                                                    ')
+    print('                                                                                                    ')
+    print('                                                                                                    ')
