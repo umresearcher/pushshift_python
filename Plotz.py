@@ -4,7 +4,6 @@ Version 1.0
 '''
 import pandas as pd
 import matplotlib.pyplot as plt
-import logo
 import time
 
 
@@ -37,6 +36,5 @@ def plot_post_vs_numcomm(kind):
 
 
 if __name__ == '__main__':
-    logo.um()
     importcsv()
     plot_date_vs_numcomm('S')
