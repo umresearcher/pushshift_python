@@ -5,3 +5,8 @@ This Repo is work in progress. If bugs are found feel free to contact me: casonk
 
 Analytics features coming.
 Authorship overlap by community; cross community references; plotting metrics. 
+
+
+How to:
+
+Download Master; Dependencies; & Puller into folder; Run Master; Input Vars; Sit Back
